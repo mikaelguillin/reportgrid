@@ -19,7 +19,7 @@ const HEADERS = [
 
 function dateFormula(rowIndex: number): string {
   const uploadCell = `H${rowIndex}`;
-  return `DATE(YEAR(TODAY()),VALUE(MID(${uploadCell},3,2)),VALUE(RIGHT(${uploadCell},2)))`;
+  return `DATE(YEAR(TODAY()),LEFT(MID(${uploadCell},3,4),2),RIGHT(MID(${uploadCell},3,4),2))`;
 }
 
 function weekFormula(rowIndex: number): string {
