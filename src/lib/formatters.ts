@@ -17,7 +17,8 @@ export function isMonthYearValid(value: string): boolean {
     return false;
   }
   const month = Number(value.slice(0, 2));
-  return month >= 1 && month <= 12;
+  const day = Number(value.slice(3, 5));
+  return month >= 1 && month <= 12 && day >= 1 && day <= 31;
 }
 
 export function stepToExcelValue(step: StepField): string {

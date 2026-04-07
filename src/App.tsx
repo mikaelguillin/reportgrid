@@ -96,7 +96,7 @@ function App() {
       return;
     }
     if (!allRowsValid) {
-      setError("Fill initials once and valid MM/YY in every workflow column for each row.");
+      setError("Fill initials once and valid MM/DD in every workflow column for each row.");
       return;
     }
     const rowsWithInitials = rows.map((row) => ({

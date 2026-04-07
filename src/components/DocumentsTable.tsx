@@ -44,11 +44,11 @@ export function DocumentsTable({
                 <div className="flex min-w-36 flex-col gap-2">
                   <span>{step.label}</span>
                   <Field.Root>
-                    <Field.Label className="text-xs text-muted-foreground">MM/YY</Field.Label>
+                    <Field.Label className="text-xs text-muted-foreground">MM/DD</Field.Label>
                     <Input
                       value={stepMonthYears[step.key]}
                       onChange={(event) => onStepMonthYearChange(step.key, event.target.value)}
-                      placeholder="04/26"
+                      placeholder="04/12"
                       maxLength={5}
                     />
                   </Field.Root>
