@@ -6,7 +6,7 @@ import { ExportButton } from "./components/ExportButton";
 import { PdfUploader } from "./components/PdfUploader";
 import { Input } from "./components/ui/input";
 import { exportRowsToExcel } from "./lib/exportExcel";
-import { isMonthYearValid, normalizeInitials, normalizeMonthYear } from "./lib/formatters";
+import { normalizeInitials, normalizeMonthYear } from "./lib/formatters";
 import { getPdfPageCount } from "./lib/pdfPages";
 import { toDocSymbol } from "./lib/docSymbol";
 import type { DocumentRow, StepKey } from "./types/documentRow";
@@ -28,16 +28,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const allRowsValid = useMemo(() => {
-    if (initials.trim().length === 0) {
-      return false;
-    }
-    return rows.every((row) =>
-      (["scan", "postScanning", "pdfMetadata", "qualityCheck", "upload"] as StepKey[]).every(
-        (key) => isMonthYearValid(row[key].monthYear),
-      ),
-    );
-  }, [initials, rows]);
+  const canExport = useMemo(() => rows.length > 0 && !isLoading, [isLoading, rows.length]);
 
   const handleFiles = async (files: FileList) => {
     setError(null);
@@ -95,10 +86,6 @@ function App() {
       setError("Upload at least one PDF before exporting.");
       return;
     }
-    if (!allRowsValid) {
-      setError("Fill initials once and valid MM/DD in every workflow column for each row.");
-      return;
-    }
     const rowsWithInitials = rows.map((row) => ({
       ...row,
       scan: { ...row.scan, initials },
@@ -133,9 +120,9 @@ function App() {
         <PdfUploader
           onFilesSelected={handleFiles}
           isLoading={isLoading}
-          isDisabled={initials.trim().length === 0}
+          isDisabled={false}
         />
-        <ExportButton disabled={rows.length === 0 || !allRowsValid || isLoading} onExport={handleExport} />
+        <ExportButton disabled={!canExport} onExport={handleExport} />
       </div>
 
       {error ? (
