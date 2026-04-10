@@ -76,6 +76,15 @@ function App() {
     );
   };
 
+  const updateRowStepMonthYear = (id: string, step: StepKey, value: string) => {
+    const normalizedValue = normalizeMonthYear(value);
+    setRows((current) =>
+      current.map((row) =>
+        row.id === id ? { ...row, [step]: { ...row[step], monthYear: normalizedValue } } : row,
+      ),
+    );
+  };
+
   const updateNotes = (id: string, notes: string) => {
     setRows((current) => current.map((row) => (row.id === id ? { ...row, notes } : row)));
   };
@@ -135,6 +144,7 @@ function App() {
         rows={rows}
         stepMonthYears={stepMonthYears}
         onStepMonthYearChange={updateStepMonthYear}
+        onRowStepMonthYearChange={updateRowStepMonthYear}
         onNotesChange={updateNotes}
       />
     </main>

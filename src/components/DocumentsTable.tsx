@@ -8,6 +8,7 @@ type DocumentsTableProps = {
   rows: DocumentRow[];
   stepMonthYears: Record<StepKey, string>;
   onStepMonthYearChange: (step: StepKey, value: string) => void;
+  onRowStepMonthYearChange: (id: string, step: StepKey, value: string) => void;
   onNotesChange: (id: string, value: string) => void;
 };
 
@@ -23,6 +24,7 @@ export function DocumentsTable({
   rows,
   stepMonthYears,
   onStepMonthYearChange,
+  onRowStepMonthYearChange,
   onNotesChange,
 }: DocumentsTableProps) {
   if (rows.length === 0) {
@@ -44,11 +46,10 @@ export function DocumentsTable({
                 <div className="flex min-w-36 flex-col gap-2">
                   <span>{step.label}</span>
                   <Field.Root>
-                    <Field.Label className="text-xs text-muted-foreground">MM/DD</Field.Label>
+                    <Field.Label className="text-xs text-muted-foreground">Date (MM/DD)</Field.Label>
                     <Input
                       value={stepMonthYears[step.key]}
                       onChange={(event) => onStepMonthYearChange(step.key, event.target.value)}
-                      placeholder="04/12"
                       maxLength={5}
                     />
                   </Field.Root>
@@ -68,7 +69,14 @@ export function DocumentsTable({
               </td>
               {STEPS.map((step) => (
                 <td key={step.key} className="p-3">
-                  {row[step.key].monthYear || "-"}
+                  <Input
+                    value={row[step.key].monthYear}
+                    onChange={(event) =>
+                      onRowStepMonthYearChange(row.id, step.key, event.target.value)
+                    }
+                    maxLength={5}
+                    placeholder="MM/DD"
+                  />
                 </td>
               ))}
               <td className="p-3">{row.pagesF}</td>
